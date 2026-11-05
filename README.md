@@ -1,215 +1,134 @@
-# Nexora Technologies — Professional Static Company Website
+# Supermart 🛒 - Fresh Groceries Delivered in 15 Minutes
 
-A modern, responsive, and production-ready **static corporate website** for an enterprise cloud architecture and intelligent engineering company.
+A complete, production-quality frontend application for an online supermarket designed specifically for Indian households ordering weekly groceries on mobile and desktop. Built with **React + Vite**, **React Router (HashRouter)**, and custom **plain CSS** (no external UI component libraries).
 
-Built with **HTML5**, **CSS3**, **Vanilla JavaScript**, and **Bootstrap 5**, this project contains zero backend, database, or server runtime requirements. It is engineered to deploy instantly to **AWS S3 + CloudFront**, **GitHub Pages**, or **Netlify**.
-
----
-
-## 🚀 Key Features
-
-* **5 Fully Connected Pages**:
-  * `index.html` — Corporate landing page with hero banner, service matrix, stats, featured careers, client testimonials, and trust badges.
-  * `about.html` — Company background, mission & vision, core values, leadership profiles, and interactive timeline milestones.
-  * `careers.html` — Interactive job search portal featuring instant text search, multi-facet filtering (Department, Job Type, Location, Experience), job card badges, and a detailed role specification modal.
-  * `apply.html` — Candidate application form with drag-and-drop resume upload, strict file type (`.pdf`, `.doc`, `.docx`) and file size (`≤5MB`) validation, auto-population of selected roles, and clear static-demo confirmation.
-  * `contact.html` — Corporate contact hubs (San Francisco HQ, Austin, London), validated inquiry form, office visiting guide with map visualization, and FAQ accordion.
-* **Modern Design Aesthetics**:
-  * Clean typography using Google Fonts (*Plus Jakarta Sans* and *Inter*).
-  * Harmonious corporate slate and vibrant blue/cyan palette.
-  * Glassmorphism navigation bar with blur and scroll shadow.
-  * Mobile-first responsive layouts tested across mobile, tablet, and desktop viewports.
-* **Static Architecture Compliance**:
-  * Real-time client-side form validation.
-  * Transparent notifications explaining static-site demo mode without misleading users into believing emails were sent to a non-existent server.
-  * Zero build tools or compilation steps required—open and run directly.
+Prices are formatted in Indian Rupee (₹) using `Intl.NumberFormat('en-IN')`. The interface is fast to scan, lightweight, and easy to use with one hand on mobile devices.
 
 ---
 
-## 📁 Directory Structure
+## 🌟 Key Features & Pages
+
+### 1. Pages & Routes
+- **Home (`#/`)**: Delivery slot selection strip ("15 mins delivery"), interactive category tiles, "Deals of the Day" carousel, "Buy Again" past-order recommendations, and featured products grid.
+- **Category & Search Results (`#/category/:slug` & `#/search?q=...`)**: Full product grid, sort dropdown (Price Low-to-High, High-to-Low, Highest Discount %, Customer Rating, Popularity), multi-faceted sidebar filters (Categories, Price range, In-stock only, Special offers only), active filter tags, and a friendly empty state.
+- **Product Detail (`#/product/:id` pride-tested produce)**: Large image presentation area with emoji illustrations, multi-pack unit selector (e.g., 500 g, 1 kg, 2 kg saver packs), yellow price sticker with crossed MRP and savings badge, detailed description, shelf life, storage instructions, origin details, live stock indicator, quantity stepper, add-to-cart, wishlist toggle, and similar products row.
+- **Cart (Drawer & Full Page `#/cart`)**: Accessible slide-out cart drawer from any page plus dedicated full-page cart. Features line items with unit displays, quantity steppers, remove button, promo code field (`SAVE50`, `SUPER100`, `FREEDEL`, `FRESH20`), free delivery progress bar (Free above ₹499, otherwise ₹40), and detailed bill breakdown (Item Total, Product Savings, Coupon Discount, Delivery Fee, Total Payable).
+- **Checkout (`#/checkout`)**: 3-step checkout with address selection / new address form with Indian phone and 6-digit PIN code validation, delivery window picker (Today/Tomorrow express and standard slots), mock payment choices (UPI with Google Pay/PhonePe/Paytm/Custom UPI ID, Credit/Debit card, Cash on Delivery), and live order summary.
+- **Order Success (`#/order-success/:orderId`)**: Order confirmation with generated Order ID (e.g., `SM-84920`), estimated delivery time tracker ("Arriving today within 15-25 mins") with milestone steps (*Order Placed* → *Packing* → *Out for Delivery* → *Delivered*), order breakdown, and quick action buttons.
+- **Past Orders (`#/orders`)**: Delivery history with timestamps, status tags, item preview badges, bill totals, expandable line item details, and a 1-click **"Reorder All"** button that repopulates the cart with toast feedback.
+- **Authentication & Profile (`#/login` & `#/profile`)**: Phone number / OTP mock authentication and 1-click Demo Login. Profile dashboard featuring saved delivery addresses management (add, edit, delete, set default) and quick links.
+- **Wishlist (`#/wishlist`)**: Saved favorite groceries with 1-click "Move to Cart" and "Add All to Cart".
+- **404 Page (`#/*`)**: Grocery-themed error screen with helpful return links.
+
+### 2. State & Architecture
+- **Global State**: React Context + `useReducer` for Cart, Wishlist, Authentication, and Orders. All states persist seamlessly to `localStorage`.
+- **Live Search**: Debounced search (250ms) in the header with live suggestions categorized by matching categories and instant product results with prices.
+- **Mock API Client (`src/api.js`)**: Clean async module (`getProducts`, `getProductById`, `getCategories`, `placeOrder`, `getPastOrders`) simulating realistic network latency. Can be swapped for a real REST or GraphQL backend simply by editing this single file.
+- **Product Catalog (`src/data/products.js`)**: 44 authentic Indian grocery items across 7 categories (Fruits & Vegetables, Dairy & Eggs, Staples & Flours, Snacks & Munchies, Beverages & Chai, Household & Cleaning, Personal Care & Hygiene) with unit variations, MRPs, discounts, origin tags, and stock counts.
+
+### 3. Design Direction & Accessibility
+- **Fresh-Market Color Palette**:
+  - Primary: Leaf Green (`#1b6b43`)
+  - Accent / Price Stickers & Cart Button: Sunny Yellow (`#ffd23f`)
+  - Background: Pale Mint (`#edf5ef`)
+  - Typography: Deep Ink (`#16241c`)
+  - Discounts & Alerts: Red (`#d62f3a`)
+- **Typography**: Google Fonts *Bricolage Grotesque* for headings and prices; *DM Sans* for body text.
+- **Accessibility**: Semantic HTML (`<header>`, `<nav>`, `<main>`, `<article>`, `<aside>`, `<footer>`), visible `:focus-visible` outlines, ARIA attributes on icon buttons, screen-reader friendly live alerts, and `prefers-reduced-motion` compliance.
+
+---
+
+## 📁 Project Structure
 
 ```text
-company-website/
-├── index.html               # Home / Landing page
-├── about.html               # About Us page
-├── careers.html             # Careers listing & filter page
-├── apply.html               # Job application form page
-├── contact.html             # Contact Us & office hubs page
-├── assets/
-│   ├── images/
-│   │   ├── logo.svg         # Primary corporate logo
-│   │   ├── logo-white.svg   # Light logo for dark footer
-│   │   └── favicon.svg      # Browser favicon
-│   └── icons/
-├── css/
-│   └── style.css            # Custom CSS design system & utilities
-├── js/
-│   ├── main.js              # Header scroll, nav highlighting, footer date
-│   ├── careers.js           # Sample job data, search, filtering & modal
-│   ├── apply.js             # Form validation, file checks, auto-populate
-│   └── contact.js           # Contact form validation & demo modal
-└── README.md                # Deployment, architecture & testing guide
+src/
+├── api.js                   # Async API layer for products, search & orders
+├── App.jsx                  # Main application shell, routes & layout
+├── components/
+│   ├── CartDrawer.jsx       # Global slide-out shopping cart drawer
+│   ├── CategoryTile.jsx     # Category icon card
+│   ├── DeliverySlotStrip.jsx# Top delivery location & slot strip
+│   ├── FilterPanel.jsx      # Multi-criteria filter sidebar & mobile sheet
+│   ├── Header.jsx           # Sticky desktop/mobile header with live search & cart pill
+│   ├── ProductCard.jsx      # Product card with price sticker & stepper
+│   ├── ProductRow.jsx       # Horizontal scrollable product row
+│   ├── QuantityStepper.jsx  # Accessible +/- quantity stepper
+│   ├── SearchBar.jsx        # Live debounced autocomplete search bar
+│   ├── Skeleton.jsx         # Loading skeleton shimmers
+│   └── TabBar.jsx           # Fixed bottom navigation bar for mobile
+├── context/
+│   ├── AuthContext.jsx      # User profile & saved addresses (localStorage)
+│   ├── CartContext.jsx      # Cart items, quantities, coupon logic & bill
+│   ├── OrderContext.jsx     # Order placement & reorder actions
+│   ├── ToastContext.jsx     # Toast notification dispatcher
+│   └── WishlistContext.jsx  # Saved favorite items (localStorage)
+├── data/
+│   ├── categories.js        # 7 grocery categories with metadata
+│   └── products.js          # 44 Indian grocery products with unit options
+├── index.css                # Plain CSS design system & responsive rules
+├── main.jsx                 # React root bootstrap with HashRouter
+└── utils.js                 # Currency (₹), slots, coupon & bill helpers
 ```
 
 ---
 
-## 💻 How to Run Locally
+## 🚀 Running Locally
 
-Because this project uses standard web technologies with relative asset paths, you can run it in multiple ways:
+### Prerequisites
+- Node.js (v18 or higher recommended; verified on Node v22)
+- npm (v9 or higher)
 
-### Option A: Python HTTP Server (Fastest, zero install on most OS)
-Open terminal / PowerShell in the project directory:
+### Installation & Development Server
 ```bash
-# Python 3
-python -m http.server 8000
-```
-Then visit [http://localhost:8000](http://localhost:8000) in your browser.
+# 1. Install dependencies
+npm install
 
-### Option B: Node.js (npx serve or live-server)
+# 2. Run local development server
+npm run dev
+```
+
+Open your browser at `http://localhost:5173` (or the port shown in your terminal).
+
+---
+
+## 📦 Production Build
+
+To compile the application into a static production bundle:
+
 ```bash
-npx -y serve . -l 3000
-```
-Then visit [http://localhost:3000](http://localhost:3000).
-
-### Option C: VS Code Live Server
-1. Open the project folder in VS Code.
-2. Install the **Live Server** extension by Ritwick Dey.
-3. Right-click `index.html` and select **"Open with Live Server"**.
-
-### Option D: Direct Browser Opening
-Double-click `index.html` in your file explorer. All pages and relative links will function immediately.
-
----
-
-## ☁️ Deployment Guide
-
-### 1. Amazon S3 + CloudFront Static Hosting (Recommended)
-
-#### Step 1: Create an S3 Bucket
-1. Log in to the [AWS Management Console](https://aws.amazon.com/console/) and navigate to **Amazon S3**.
-2. Click **Create bucket**.
-3. Bucket Name: e.g. `nexora-company-website-2026` (must be globally unique).
-4. Region: Choose your preferred AWS region (e.g., `us-east-1`).
-5. Object Ownership: **ACLs disabled (recommended)**.
-6. Leave **Block all public access** enabled if using CloudFront with Origin Access Control (OAC).
-
-#### Step 2: Upload Files
-Upload all files and folders maintaining relative directory paths:
-* `index.html`, `about.html`, `careers.html`, `apply.html`, `contact.html` in the root.
-* `assets/`, `css/`, and `js/` folders with their respective contents.
-
-#### Step 3: Configure Amazon CloudFront
-1. Navigate to **CloudFront** in the AWS Console.
-2. Click **Create distribution**.
-3. **Origin domain**: Select your S3 bucket.
-4. **Origin access**: Select **Origin Access Control (OAC)** and create a new control setting.
-5. **Viewer protocol policy**: Select **Redirect HTTP to HTTPS**.
-6. **Default root object**: Set to `index.html`.
-7. Click **Create distribution**.
-8. Copy the generated S3 bucket policy from CloudFront and apply it under the S3 bucket's **Permissions > Bucket policy** tab.
-9. Under CloudFront **Error pages**, configure custom error responses:
-   * HTTP error code: `404` -> Response page path: `/index.html` (or a custom 404 page) -> HTTP Response code: `200`.
-
-Your website is now globally distributed via CloudFront edge locations with SSL/TLS encryption.
-
----
-
-### 2. GitHub Pages Deployment
-
-1. Initialize git in the folder:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit of static company website"
-   ```
-2. Push to your GitHub repository:
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<repo-name>.git
-   git push -u origin main
-   ```
-3. In the repository settings:
-   * Go to **Settings** > **Pages**.
-   * Under **Build and deployment**, select **Source: Deploy from a branch**.
-   * Choose branch: `main` and folder: `/ (root)`.
-   * Click **Save**. Your site will be published at `https://<your-username>.github.io/<repo-name>/`.
-
----
-
-### 3. Netlify Deployment
-
-1. Drag and drop the `company-website/` directory into the [Netlify Drop](https://app.netlify.com/drop) dashboard.
-2. Alternatively, connect your Git repository; leave build command blank and publish directory as `.`.
-
----
-
-## 🔌 Connecting Form Services (Without Rebuilding Frontend)
-
-Because this website operates as a pure static frontend, submissions are currently handled in demo mode with client validation. To connect live email notifications or CRM storage without rebuilding the UI, choose one of the following approaches:
-
-### Option 1: AWS Serverless (API Gateway + Lambda + Amazon SES)
-1. Deploy an AWS Lambda function that parses JSON payloads and uses `boto3` / `@aws-sdk/client-ses` to send an email to your team.
-2. Create an **HTTP API** in **Amazon API Gateway** with CORS enabled for your domain.
-3. In `js/apply.js` or `js/contact.js`, replace the `setTimeout` simulation with a standard `fetch`:
-   ```javascript
-   const response = await fetch("https://api-id.execute-api.us-east-1.amazonaws.com/submit", {
-     method: "POST",
-     headers: { "Content-Type": "application/json" },
-     body: JSON.stringify(formData)
-   });
-   ```
-
-### Option 2: Formspree / Web3Forms / FormKeep
-Update the `<form>` opening tag in `contact.html`:
-```html
-<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-  <!-- Inputs remain identical -->
-</form>
+npm run build
 ```
 
-### Option 3: Netlify Forms
-Add the `data-netlify="true"` attribute to the `<form>` element:
-```html
-<form name="job-application" method="POST" data-netlify="true" enctype="multipart/form-data">
-  <!-- Netlify automatically captures form and file uploads -->
-</form>
+This generates an optimized static bundle in the `dist/` directory with:
+- `dist/index.html`
+- `dist/assets/*.js`
+- `dist/assets/*.css`
+
+To preview the production build locally:
+```bash
+npm run preview
 ```
 
 ---
 
-## 🧪 Testing & Quality Assurance Checklist
+## ☁️ AWS S3 Static Hosting Deployment
 
-| Category | Test Item | Expected Result | Status |
-| :--- | :--- | :--- | :---: |
-| **Navigation** | All navbar links (`Home`, `About`, `Careers`, `Apply`, `Contact`) | Navigate correctly without broken links or 404s | Pass |
-| **Navigation** | Active page highlighting | Nav link for the active page receives `.active` class | Pass |
-| **Careers** | Search input | Filters jobs in real time by title, skills, description | Pass |
-| **Careers** | Dropdown filters | Filters by Department, Job Type, Location, Experience | Pass |
-| **Careers** | Empty state | Shows helpful message and "Clear All Filters" button | Pass |
-| **Careers** | "View Details" modal | Opens pop-up with role responsibilities, qualifications, and perks | Pass |
-| **Careers -> Apply** | "Apply Now" button click | Navigates to `apply.html?job=...` and automatically selects position | Pass |
-| **Application Form** | Required field validation | Flags empty required fields with clear red error feedback | Pass |
-| **Application Form** | Email & Phone checks | Validates email syntax and telephone formatting | Pass |
-| **Application Form** | Resume file extension | Rejects unsupported extensions (e.g. `.exe`, `.png`); allows `.pdf`, `.doc`, `.docx` | Pass |
-| **Application Form** | Resume file size | Rejects files > 5.0 MB with error message; displays size if valid | Pass |
-| **Application Form** | Reset Form button | Clears all fields and resets validation error states | Pass |
-| **Application Form** | Submission Demo Modal | Shows candidate summary with static-site architecture disclaimer | Pass |
-| **Contact Form** | Client-side validation | Requires Name, Email, Subject, and minimum 10 characters for Message | Pass |
-| **Responsive** | Mobile viewport (< 576px) | Collapsible burger menu, single-column cards, touch-friendly tap targets | Pass |
-| **Console** | Developer Console inspection | Zero syntax errors, missing asset 404s, or uncaught exceptions | Pass |
+The project is pre-configured for AWS S3 static website hosting:
+1. `vite.config.js` sets `base: "./"` so all asset references are relative.
+2. `src/main.jsx` uses `HashRouter` (`#/route`) so page reloads on S3 work immediately without requiring custom CloudFront 404 rewriting rules.
 
----
+### Deploy Steps Using AWS CLI
 
-## 🎨 Branding & Customization
+```bash
+# 1. Build the production assets
+npm run build
 
-To rebrand this template for your own organization:
-1. **Logo**: Replace `assets/images/logo.svg` and `assets/images/logo-white.svg` with your SVG or PNG logos.
-2. **Company Name**: Search & replace `Nexora Technologies` with your business name.
-3. **Contact Details**: Update the email, phone numbers, and address in `index.html`, `about.html`, and `contact.html`.
-4. **Job Listings**: Modify the `sampleJobs` array in `js/careers.js` to add, update, or remove positions.
-5. **Theme Colors**: Modify CSS variables in `css/style.css` (e.g., `--primary: #2563eb;`, `--secondary: #06b6d4;`).
+# 2. Sync files to your AWS S3 bucket
+aws s3 cp dist/ s3://YOUR-SUPERMART-BUCKET-NAME/ --recursive
 
----
+# 3. (Optional) Set index document if configuring S3 Static Website Hosting
+aws s3 website s3://YOUR-SUPERMART-BUCKET-NAME/ --index-document index.html --error-document index.html
+```
 
-## 📄 License
-This project is open-source and free to adapt for personal, educational, or commercial purposes.
+Your Supermart storefront is now live on AWS S3!
+
